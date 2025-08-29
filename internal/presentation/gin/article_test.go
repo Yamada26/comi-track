@@ -2,7 +2,7 @@ package presentation_test
 
 import (
 	"comi-track/internal/domain"
-	"comi-track/internal/presentation"
+	presentation "comi-track/internal/presentation/gin"
 	"net/http"
 	"net/http/httptest"
 	"testing"

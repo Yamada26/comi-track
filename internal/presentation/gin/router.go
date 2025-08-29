@@ -1,7 +1,7 @@
 package presentation
 
 import (
-	"comi-track/internal/infrastructure"
+	infrastructure "comi-track/internal/infrastructure/sqlite"
 	"comi-track/internal/usecase"
 
 	"github.com/gin-gonic/gin"

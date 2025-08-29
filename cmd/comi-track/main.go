@@ -1,8 +1,8 @@
 package main
 
 import (
-	"comi-track/internal/infrastructure"
-	"comi-track/internal/presentation"
+	infrastructure "comi-track/internal/infrastructure/sqlite"
+	presentation "comi-track/internal/presentation/gin"
 	"log"
 )
 
