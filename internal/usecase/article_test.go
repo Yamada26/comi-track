@@ -1,8 +1,8 @@
 package usecase_test
 
 import (
-	"comi-track/domain"
-	"comi-track/usecase"
+	"comi-track/internal/domain"
+	"comi-track/internal/usecase"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

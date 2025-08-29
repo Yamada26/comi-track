@@ -1,6 +1,6 @@
 package usecase
 
-import "comi-track/domain"
+import "comi-track/internal/domain"
 
 type ArticleUsecase struct {
 	articleRepository domain.ArticleRepository

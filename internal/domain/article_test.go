@@ -1,7 +1,7 @@
 package domain_test
 
 import (
-	"comi-track/domain"
+	"comi-track/internal/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

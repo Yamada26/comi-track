@@ -1,7 +1,7 @@
 package presentation
 
 import (
-	"comi-track/domain"
+	"comi-track/internal/domain"
 	"net/http"
 	"strconv"
 

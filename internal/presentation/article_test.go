@@ -1,8 +1,8 @@
 package presentation_test
 
 import (
-	"comi-track/domain"
-	"comi-track/presentation"
+	"comi-track/internal/domain"
+	"comi-track/internal/presentation"
 	"net/http"
 	"net/http/httptest"
 	"testing"

@@ -1,8 +1,8 @@
 package presentation
 
 import (
-	"comi-track/infrastructure"
-	"comi-track/usecase"
+	"comi-track/internal/infrastructure"
+	"comi-track/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 )

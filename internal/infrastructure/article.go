@@ -1,7 +1,7 @@
 package infrastructure
 
 import (
-	"comi-track/domain"
+	"comi-track/internal/domain"
 )
 
 type ArticleModel struct {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"comi-track/infrastructure"
-	"comi-track/presentation"
+	"comi-track/internal/infrastructure"
+	"comi-track/internal/presentation"
 	"log"
 )
 
