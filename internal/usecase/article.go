@@ -13,7 +13,12 @@ func NewArticleUsecase(ar domain.ArticleRepository) *ArticleUsecase {
 	return &ArticleUsecase{articleRepository: ar}
 }
 
-func (au *ArticleUsecase) CreateArticle(article *domain.Article) (*domain.Article, error) {
+type ArticleDTO struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+}
+
+func (au *ArticleUsecase) CreateArticle(article *domain.Article) (*ArticleDTO, error) {
 	logger.Logger.Info("Usecase: CreateArticle called", "title", article.GetTitle())
 
 	created, err := au.articleRepository.Create(article)
@@ -23,10 +28,13 @@ func (au *ArticleUsecase) CreateArticle(article *domain.Article) (*domain.Articl
 	}
 
 	logger.Logger.Info("Usecase: CreateArticle succeeded", "id", created.GetId())
-	return created, nil
+	return &ArticleDTO{
+		ID:    created.GetId(),
+		Title: created.GetTitle(),
+	}, nil
 }
 
-func (au *ArticleUsecase) GetArticleById(id int) (*domain.Article, error) {
+func (au *ArticleUsecase) GetArticleById(id int) (*ArticleDTO, error) {
 	logger.Logger.Info("Usecase: GetArticleById called", "id", id)
 
 	article, err := au.articleRepository.FindById(id)
@@ -36,5 +44,8 @@ func (au *ArticleUsecase) GetArticleById(id int) (*domain.Article, error) {
 	}
 
 	logger.Logger.Info("Usecase: GetArticleById succeeded", "id", article.GetId())
-	return article, nil
+	return &ArticleDTO{
+		ID:    article.GetId(),
+		Title: article.GetTitle(),
+	}, nil
 }

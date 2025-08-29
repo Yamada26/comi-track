@@ -2,6 +2,7 @@ package handler
 
 import (
 	"comi-track/internal/domain"
+	"comi-track/internal/usecase"
 	"comi-track/pkg/logger"
 	"net/http"
 	"strconv"
@@ -10,8 +11,8 @@ import (
 )
 
 type ArticleUsecase interface {
-	GetArticleById(id int) (*domain.Article, error)
-	CreateArticle(article *domain.Article) (*domain.Article, error)
+	GetArticleById(id int) (*usecase.ArticleDTO, error)
+	CreateArticle(article *domain.Article) (*usecase.ArticleDTO, error)
 }
 
 type ArticleHandler struct {
@@ -50,11 +51,11 @@ func (ah *ArticleHandler) CreateArticle(ctx *gin.Context) {
 		return
 	}
 
-	logger.Logger.Info("Handler: CreateArticle succeeded", "id", createdArticle.GetId())
+	logger.Logger.Info("Handler: CreateArticle succeeded", "id", createdArticle.ID)
 
 	ctx.JSON(http.StatusCreated, gin.H{
-		"id":    createdArticle.GetId(),
-		"title": createdArticle.GetTitle(),
+		"id":    createdArticle.ID,
+		"title": createdArticle.Title,
 	})
 }
 
@@ -76,10 +77,10 @@ func (ah *ArticleHandler) GetArticleById(ctx *gin.Context) {
 		return
 	}
 
-	logger.Logger.Info("Handler: GetArticleById succeeded", "id", article.GetId())
+	logger.Logger.Info("Handler: GetArticleById succeeded", "id", article.ID)
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"id":    article.GetId(),
-		"title": article.GetTitle(),
+		"id":    article.ID,
+		"title": article.Title,
 	})
 }

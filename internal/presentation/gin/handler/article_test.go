@@ -3,6 +3,7 @@ package handler_test
 import (
 	"comi-track/internal/domain"
 	"comi-track/internal/presentation/gin/handler"
+	"comi-track/internal/usecase"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -12,22 +13,25 @@ import (
 )
 
 type StubArticleUsecase struct {
-	GetArticleByIdFunc func(id int) (*domain.Article, error)
-	CreateArticleFunc  func(article *domain.Article) (*domain.Article, error)
+	GetArticleByIdFunc func(id int) (*usecase.ArticleDTO, error)
+	CreateArticleFunc  func(article *domain.Article) (*usecase.ArticleDTO, error)
 }
 
-func (au *StubArticleUsecase) CreateArticle(article *domain.Article) (*domain.Article, error) {
+func (au *StubArticleUsecase) CreateArticle(article *domain.Article) (*usecase.ArticleDTO, error) {
 	return au.CreateArticleFunc(article)
 }
 
-func (au *StubArticleUsecase) GetArticleById(id int) (*domain.Article, error) {
+func (au *StubArticleUsecase) GetArticleById(id int) (*usecase.ArticleDTO, error) {
 	return au.GetArticleByIdFunc(id)
 }
 
 func TestGetArticleById_Success(t *testing.T) {
 	mockUsecase := &StubArticleUsecase{
-		GetArticleByIdFunc: func(id int) (*domain.Article, error) {
-			return domain.NewArticle(id, "Test Article")
+		GetArticleByIdFunc: func(id int) (*usecase.ArticleDTO, error) {
+			return &usecase.ArticleDTO{
+				ID:    id,
+				Title: "Test Article",
+			}, nil
 		},
 	}
 
