@@ -1,6 +1,9 @@
 package usecase
 
-import "comi-track/internal/domain"
+import (
+	"comi-track/internal/domain"
+	"comi-track/pkg/logger"
+)
 
 type ArticleUsecase struct {
 	articleRepository domain.ArticleRepository
@@ -11,9 +14,27 @@ func NewArticleUsecase(ar domain.ArticleRepository) *ArticleUsecase {
 }
 
 func (au *ArticleUsecase) CreateArticle(article *domain.Article) (*domain.Article, error) {
-	return au.articleRepository.Create(article)
+	logger.Logger.Info("Usecase: CreateArticle called", "title", article.GetTitle())
+
+	created, err := au.articleRepository.Create(article)
+	if err != nil {
+		logger.Logger.Error("Usecase: CreateArticle failed", "error", err)
+		return nil, err
+	}
+
+	logger.Logger.Info("Usecase: CreateArticle succeeded", "id", created.GetId())
+	return created, nil
 }
 
 func (au *ArticleUsecase) GetArticleById(id int) (*domain.Article, error) {
-	return au.articleRepository.FindById(id)
+	logger.Logger.Info("Usecase: GetArticleById called", "id", id)
+
+	article, err := au.articleRepository.FindById(id)
+	if err != nil {
+		logger.Logger.Error("Usecase: GetArticleById failed", "id", id, "error", err)
+		return nil, err
+	}
+
+	logger.Logger.Info("Usecase: GetArticleById succeeded", "id", article.GetId())
+	return article, nil
 }
