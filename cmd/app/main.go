@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	infrastructure.InitDB("app.db")
+	infrastructure.InitDB("./app.db")
 
 	router := presentation.NewRouter()
 	if err := router.Run(":8080"); err != nil {
