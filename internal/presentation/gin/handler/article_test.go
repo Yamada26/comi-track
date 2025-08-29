@@ -1,8 +1,8 @@
-package presentation_test
+package handler_test
 
 import (
 	"comi-track/internal/domain"
-	presentation "comi-track/internal/presentation/gin"
+	"comi-track/internal/presentation/gin/handler"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -31,7 +31,7 @@ func TestGetArticleById_Success(t *testing.T) {
 		},
 	}
 
-	handler := presentation.NewArticleHandler(mockUsecase)
+	handler := handler.NewArticleHandler(mockUsecase)
 
 	w := httptest.NewRecorder()
 	ctx, _ := gin.CreateTestContext(w)
