@@ -2,6 +2,8 @@ package infrastructure
 
 import (
 	"comi-track/internal/domain"
+
+	"gorm.io/gorm"
 )
 
 type ArticleModel struct {
@@ -13,10 +15,12 @@ func (ArticleModel) TableName() string {
 	return "articles"
 }
 
-type ArticleRepository struct{}
+type ArticleRepository struct{
+	db *gorm.DB
+}
 
-func NewArticleRepository() *ArticleRepository {
-	return &ArticleRepository{}
+func NewArticleRepository(db *gorm.DB) *ArticleRepository {
+	return &ArticleRepository{db: db}
 }
 
 /*
@@ -24,13 +28,12 @@ func NewArticleRepository() *ArticleRepository {
 保存に成功した場合は、保存された Article を返す。
 */
 func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, error) {
-	db := GetDB()
 	model := ArticleModel{
 		ID:    article.GetId(),
 		Title: article.GetTitle(),
 	}
 
-	if err := db.Create(&model).Error; err != nil {
+	if err := ar.db.Create(&model).Error; err != nil {
 		return nil, err
 	}
 
@@ -42,9 +45,8 @@ func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, e
 存在しない場合は、gorm.ErrRecordNotFound を返す。
 */
 func (ar *ArticleRepository) FindById(id int) (*domain.Article, error) {
-	db := GetDB()
 	var model ArticleModel
-	if err := db.First(&model, id).Error; err != nil {
+	if err := ar.db.First(&model, id).Error; err != nil {
 		return nil, err
 	}
 	return domain.NewArticle(model.ID, model.Title)
