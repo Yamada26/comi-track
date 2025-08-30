@@ -31,19 +31,31 @@ func NewArticleRepository(db *gorm.DB) *ArticleRepository {
 func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, error) {
 	logger.Logger.Info("Repository: Create called", "title", article.GetTitle())
 
-	model := ArticleModel{
-		ID:    article.GetId(),
-		Title: article.GetTitle(),
-	}
+	var createdArticle *domain.Article
 
-	if err := ar.db.Create(&model).Error; err != nil {
-		logger.Logger.Error("Repository: failed to insert article", "error", err)
+	err := ar.db.Transaction(func(tx *gorm.DB) error {
+		model := ArticleModel{
+			ID:    article.GetId(),
+			Title: article.GetTitle(),
+		}
+
+		if err := tx.Create(&model).Error; err != nil {
+			logger.Logger.Error("Repository: failed to insert article", "error", err)
+			return err
+		}
+
+		logger.Logger.Info("Repository: article inserted successfully", "id", model.ID)
+
+		var err error
+		createdArticle, err = domain.NewArticle(model.ID, model.Title)
+		return err
+	})
+
+	if err != nil {
 		return nil, err
 	}
 
-	logger.Logger.Info("Repository: article inserted successfully", "id", model.ID)
-
-	return domain.NewArticle(model.ID, model.Title)
+	return createdArticle, nil
 }
 
 /*
