@@ -31,14 +31,12 @@ func (k ErrorKind) String() string {
 type AppError struct {
     Kind    ErrorKind
     Message string
-    Cause   error // ログ出力用
 }
 
-func NewAppError(kind ErrorKind, msg string, cause error) *AppError {
+func NewAppError(kind ErrorKind, msg string) *AppError {
     return &AppError{
         Kind:    kind,
         Message: msg,
-        Cause:   cause,
     }
 }
 

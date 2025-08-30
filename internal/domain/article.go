@@ -15,7 +15,7 @@ func (a *Article) GetTitle() string {
 
 func NewArticle(id int, title string) (*Article, error) {
 	if title == "" {
-		return nil, NewAppError(ErrInvalid, "title must not be empty", nil)
+		return nil, NewAppError(ErrInvalid, "title must not be empty")
 	}
 
 	return &Article{id: id, title: title}, nil
