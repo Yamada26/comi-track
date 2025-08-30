@@ -8,17 +8,17 @@ import (
 )
 
 func SlogMiddleware(logger *slog.Logger) gin.HandlerFunc {
-    return func(c *gin.Context) {
+    return func(ctx *gin.Context) {
         start := time.Now()
-        c.Next() // ハンドラ実行
+        ctx.Next() // ハンドラ実行
         latency := time.Since(start)
 
         logger.Info("Request completed",
-            "method", c.Request.Method,
-            "path", c.Request.URL.Path,
-            "status", c.Writer.Status(),
+            "method", ctx.Request.Method,
+            "path", ctx.Request.URL.Path,
+            "status", ctx.Writer.Status(),
             "latency", latency,
-            "client_ip", c.ClientIP(),
+            "client_ip", ctx.ClientIP(),
         )
     }
 }

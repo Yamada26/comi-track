@@ -25,7 +25,7 @@ func NewArticleHandler(au ArticleUsecase) *ArticleHandler {
 
 func (ah *ArticleHandler) CreateArticle(ctx *gin.Context) {
 	var reqBody struct {
-		Title string `json:"title" binding:"required"`
+		Title string `json:"title"`
 	}
 
 	// リクエスト受信ログ
@@ -33,21 +33,21 @@ func (ah *ArticleHandler) CreateArticle(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 		logger.Logger.Warn("Handler: invalid request body", "error", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		ctx.Error(err)
 		return
 	}
 
 	articleToCreate, err := domain.NewArticle(0, reqBody.Title)
 	if err != nil {
 		logger.Logger.Warn("Handler: failed to create domain.Article", "error", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.Error(err)
 		return
 	}
 
 	createdArticle, err := ah.articleUsecase.CreateArticle(articleToCreate)
 	if err != nil {
 		logger.Logger.Error("Handler: usecase.CreateArticle failed", "error", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.Error(err)
 		return
 	}
 
@@ -64,7 +64,7 @@ func (ah *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		logger.Logger.Warn("Handler: invalid article ID", "id", idStr, "error", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		ctx.Error(err)
 		return
 	}
 
@@ -73,7 +73,7 @@ func (ah *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	article, err := ah.articleUsecase.GetArticleById(id)
 	if err != nil {
 		logger.Logger.Error("Handler: usecase.GetArticleById failed", "id", id, "error", err)
-		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		ctx.Error(err)
 		return
 	}
 

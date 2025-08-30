@@ -38,7 +38,7 @@ func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, e
 
 	if err := ar.db.Create(&model).Error; err != nil {
 		logger.Logger.Error("Repository: failed to insert article", "error", err)
-		return nil, err
+		return nil, domain.NewAppError(domain.ErrInternal, "failed to insert article", err)
 	}
 
 	logger.Logger.Info("Repository: article inserted successfully", "id", model.ID)
@@ -56,7 +56,7 @@ func (ar *ArticleRepository) FindById(id int) (*domain.Article, error) {
 	var model ArticleModel
 	if err := ar.db.First(&model, id).Error; err != nil {
 		logger.Logger.Error("Repository: failed to fetch article", "id", id, "error", err)
-		return nil, err
+		return nil, domain.NewAppError(domain.ErrNotFound, "article not found", err)
 	}
 
 	logger.Logger.Info("Repository: article fetched successfully", "id", model.ID)

@@ -1,6 +1,8 @@
 package sqlite
 
 import (
+	"comi-track/internal/domain"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -9,7 +11,7 @@ import (
 func InitDB(dataSourceName string) (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open(dataSourceName), &gorm.Config{})
 	if err != nil {
-		return nil, err
+		return nil, domain.NewAppError(domain.ErrInternal, "failed to connect to database", err)
 	}
 	db.AutoMigrate(&ArticleModel{})
 

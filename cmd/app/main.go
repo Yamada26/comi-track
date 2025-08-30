@@ -15,7 +15,8 @@ func main() {
 	router := gin.New()
 
 	router.Use(middleware.SlogMiddleware(logger.Logger))
-    router.Use(gin.Recovery()) // panic は標準で Recovery してくれる
+	router.Use(middleware.ErrorHandler())
+	router.Use(gin.Recovery()) // panic は標準で Recovery してくれる
 
 	router.GET("/healthcheck", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{"message": "successful"})
