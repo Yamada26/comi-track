@@ -1,0 +1,62 @@
+@startuml
+
+package "domain" {
+    frame "event" {
+        struct EventNumber {
+            - value: int
+            + GetValue(): int
+        }
+
+        struct Event {
+            - number: EventNumber
+            + GetNumber(): EventNumber
+        }
+
+        interface EventRepository {
+            + Create(event: Event): Event
+            + FindByNumber(number: EventNumber): Event
+            + FindAll(): List<Event>
+        }
+
+        Event --> EventNumber
+    }
+
+    frame "booth" {
+        struct BoothLocation {
+            - hallName: string
+            - blockCode: string
+            - spaceNumber: int
+            - spaceHalf: string
+            + GetHallName(): string
+            + GetBlockCode(): string
+            + GetSpaceNumber(): int
+            + GetSpaceHalf(): string
+        }
+
+        struct BoothId {
+            - value: int
+            + GetValue(): int
+        }
+
+        struct Booth {
+            - id: BoothId
+            - eventNumber: EventNumber
+            - day: int
+            - location: BoothLocation
+            + GetId(): BoothId
+            + GetEventNumber(): EventNumber
+            + GetDay(): int
+            + GetLocation(): BoothLocation
+        }
+
+        interface BoothRepository {
+            + Create(booth: Booth): Booth
+            + FindAll(): List<Booth>
+        }
+
+        Booth --> BoothId
+        Booth --> EventNumber
+        Booth --> BoothLocation
+    }
+}
+@enduml

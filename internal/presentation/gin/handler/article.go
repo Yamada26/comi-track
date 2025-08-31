@@ -64,7 +64,7 @@ func (ah *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		logger.Logger.Warn("Handler: invalid article ID", "id", idStr, "error", err)
-		ctx.Error(err)
+		ctx.Error(domain.NewAppError(domain.ErrInvalid, "invalid article ID"))
 		return
 	}
 

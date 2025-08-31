@@ -41,7 +41,7 @@ func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, e
 
 		if err := tx.Create(&model).Error; err != nil {
 			logger.Logger.Error("Repository: failed to insert article", "error", err)
-			return err
+			return domain.NewAppError(domain.ErrInternal, "failed to create article")
 		}
 
 		logger.Logger.Info("Repository: article inserted successfully", "id", model.ID)
