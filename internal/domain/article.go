@@ -1,7 +1,5 @@
 package domain
 
-import "errors"
-
 type Article struct {
 	id    int
 	title string
@@ -17,7 +15,7 @@ func (a *Article) GetTitle() string {
 
 func NewArticle(id int, title string) (*Article, error) {
 	if title == "" {
-		return nil, errors.New("title must not be empty")
+		return nil, NewAppError(ErrInvalid, "title must not be empty")
 	}
 
 	return &Article{id: id, title: title}, nil

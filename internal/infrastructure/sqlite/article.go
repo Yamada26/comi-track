@@ -68,7 +68,7 @@ func (ar *ArticleRepository) FindById(id int) (*domain.Article, error) {
 	var model ArticleModel
 	if err := ar.db.First(&model, id).Error; err != nil {
 		logger.Logger.Error("Repository: failed to fetch article", "id", id, "error", err)
-		return nil, err
+		return nil, domain.NewAppError(domain.ErrNotFound, "article not found")
 	}
 
 	logger.Logger.Info("Repository: article fetched successfully", "id", model.ID)
