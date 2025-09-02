@@ -72,12 +72,12 @@ func (boothId BoothId) GetValue() int {
 // Booth
 type Booth struct {
 	id          BoothId
-	eventNumber EventNumber
+	eventNumber int
 	day         int
 	location    BoothLocation
 }
 
-func NewBooth(id BoothId, eventNumber EventNumber, day int, location BoothLocation) (*Booth, *common.AppError) {
+func NewBooth(id BoothId, eventNumber int, day int, location BoothLocation) (*Booth, *common.AppError) {
 	return &Booth{
 		id:          id,
 		eventNumber: eventNumber,
@@ -86,11 +86,11 @@ func NewBooth(id BoothId, eventNumber EventNumber, day int, location BoothLocati
 	}, nil
 }
 
-func (booth *Booth) GetId() BoothId {
+func (booth *Booth) GetID() BoothId {
 	return booth.id
 }
 
-func (booth *Booth) GetEventNumber() EventNumber {
+func (booth *Booth) GetEventNumber() int {
 	return booth.eventNumber
 }
 

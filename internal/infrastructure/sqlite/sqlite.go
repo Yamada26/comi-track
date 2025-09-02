@@ -13,6 +13,7 @@ func InitDB(dataSourceName string) (*gorm.DB, error) {
 		return nil, common.NewAppError(common.ErrInternal, "failed to connect to database")
 	}
 	db.AutoMigrate(&ArticleModel{})
+	db.AutoMigrate(&EventModel{})
 
 	return db, nil
 }

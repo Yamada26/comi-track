@@ -2,7 +2,6 @@ package handler
 
 import (
 	"comi-track/internal/common"
-	"comi-track/internal/domain"
 	"comi-track/internal/usecase"
 	"comi-track/pkg/logger"
 	"net/http"
@@ -12,8 +11,8 @@ import (
 )
 
 type ArticleUsecase interface {
-	GetArticleById(id int) (*usecase.ArticleDTO, error)
-	CreateArticle(article *domain.Article) (*usecase.ArticleDTO, error)
+	GetArticleById(command usecase.GetArticleByIdCommand) (*usecase.ArticleDTO, error)
+	CreateArticle(command usecase.CreateArticleCommand) (*usecase.ArticleDTO, error)
 }
 
 type ArticleHandler struct {
@@ -38,14 +37,10 @@ func (ah *ArticleHandler) CreateArticle(ctx *gin.Context) {
 		return
 	}
 
-	articleToCreate, err := domain.NewArticle(0, reqBody.Title)
-	if err != nil {
-		logger.Logger.Warn("Handler: failed to create domain.Article", "error", err)
-		ctx.Error(err)
-		return
+	command := usecase.CreateArticleCommand{
+		Title: reqBody.Title,
 	}
-
-	createdArticle, err := ah.articleUsecase.CreateArticle(articleToCreate)
+	createdArticle, err := ah.articleUsecase.CreateArticle(command)
 	if err != nil {
 		logger.Logger.Error("Handler: usecase.CreateArticle failed", "error", err)
 		ctx.Error(err)
@@ -71,7 +66,10 @@ func (ah *ArticleHandler) GetArticleById(ctx *gin.Context) {
 
 	logger.Logger.Info("Handler: GetArticleById called", "id", id)
 
-	article, err := ah.articleUsecase.GetArticleById(id)
+	command := usecase.GetArticleByIdCommand{
+		ID: id,
+	}
+	article, err := ah.articleUsecase.GetArticleById(command)
 	if err != nil {
 		logger.Logger.Error("Handler: usecase.GetArticleById failed", "id", id, "error", err)
 		ctx.Error(err)

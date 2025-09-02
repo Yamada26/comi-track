@@ -7,7 +7,7 @@ type Article struct {
 	title string
 }
 
-func (a *Article) GetId() int {
+func (a *Article) GetID() int {
 	return a.id
 }
 

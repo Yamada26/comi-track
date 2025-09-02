@@ -36,7 +36,8 @@ func TestGetArticleById_Success(t *testing.T) {
 	articleUsecase := usecase.NewArticleUsecase(mockRepo)
 
 	articleId := 1
-	article, err := articleUsecase.GetArticleById(articleId)
+	command := usecase.GetArticleByIdCommand{ID: articleId}
+	article, err := articleUsecase.GetArticleById(command)
 	assert.NoError(t, err)
 	assert.NotNil(t, article)
 }

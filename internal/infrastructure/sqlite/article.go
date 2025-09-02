@@ -9,7 +9,7 @@ import (
 )
 
 type ArticleModel struct {
-	ID    int    `gorm:"primaryKey;column:id"`
+	ID    int    `gorm:"primaryKey;column:id;autoIncrement"`
 	Title string `gorm:"column:title"`
 }
 
@@ -36,7 +36,7 @@ func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, e
 
 	err := ar.db.Transaction(func(tx *gorm.DB) error {
 		model := ArticleModel{
-			ID:    article.GetId(),
+			ID:    article.GetID(),
 			Title: article.GetTitle(),
 		}
 

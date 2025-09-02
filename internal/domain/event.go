@@ -2,26 +2,30 @@ package domain
 
 import "comi-track/internal/common"
 
-type EventNumber struct {
-	value int
+type Event struct {
+	id     int
+	number int
 }
 
-func NewEventNumber(value int) (EventNumber, error) {
-	if value <= 0 {
-		return EventNumber{}, common.NewAppError(common.ErrInvalid, "event number must be positive")
+func NewEvent(id int, number int) (*Event, error) {
+	if id < 0 {
+		return nil, common.NewAppError(common.ErrInvalid, "event id must be non-negative")
 	}
 
-	return EventNumber{value}, nil
+	if number <= 0 {
+		return nil, common.NewAppError(common.ErrInvalid, "event number must be positive")
+	}
+	return &Event{id: id, number: number}, nil
 }
 
-type Event struct {
-	number EventNumber
+func (event *Event) GetID() int {
+	return event.id
 }
 
-func NewEvent(number EventNumber) (*Event, error) {
-	return &Event{number: number}, nil
-}
-
-func (event *Event) GetNumber() EventNumber {
+func (event *Event) GetNumber() int {
 	return event.number
+}
+
+type EventRepository interface {
+	Create(event *Event) (*Event, error)
 }

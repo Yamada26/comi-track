@@ -43,7 +43,7 @@ package "domain" {
             - eventNumber: EventNumber
             - day: int
             - location: BoothLocation
-            + GetId(): BoothId
+            + GetID(): BoothId
             + GetEventNumber(): EventNumber
             + GetDay(): int
             + GetLocation(): BoothLocation
