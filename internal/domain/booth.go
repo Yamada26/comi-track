@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"comi-track/internal/common"
 	"fmt"
 	"regexp"
 )
@@ -13,23 +14,23 @@ type BoothLocation struct {
 	spaceHalf   string
 }
 
-func NewBoothLocation(hallName string, blockCode string, spaceNumber int, spaceHalf string) (BoothLocation, *AppError) {
+func NewBoothLocation(hallName string, blockCode string, spaceNumber int, spaceHalf string) (BoothLocation, *common.AppError) {
 	if hallName != "N" && hallName != "S" {
-		return BoothLocation{}, NewAppError(ErrInvalid, "hall name must be 'N' or 'S'")
+		return BoothLocation{}, common.NewAppError(common.ErrInvalid, "hall name must be 'N' or 'S'")
 	}
 
 	// 正規表現: 半角英字、ひらがな、カタカナのみ
 	var validCode = regexp.MustCompile(`^[A-Za-zぁ-んァ-ン]+$`)
 	if !validCode.MatchString(blockCode) {
-		return BoothLocation{}, NewAppError(ErrInvalid, fmt.Sprintf("block code '%s' is invalid", blockCode))
+		return BoothLocation{}, common.NewAppError(common.ErrInvalid, fmt.Sprintf("block code '%s' is invalid", blockCode))
 	}
 
 	if spaceNumber <= 0 || spaceNumber >= 100 {
-		return BoothLocation{}, NewAppError(ErrInvalid, "space number must be between 1 and 99")
+		return BoothLocation{}, common.NewAppError(common.ErrInvalid, "space number must be between 1 and 99")
 	}
 
 	if spaceHalf != "a" && spaceHalf != "b" {
-		return BoothLocation{}, NewAppError(ErrInvalid, "space half must be 'a' or 'b'")
+		return BoothLocation{}, common.NewAppError(common.ErrInvalid, "space half must be 'a' or 'b'")
 	}
 
 	return BoothLocation{hallName, blockCode, spaceNumber, spaceHalf}, nil
@@ -56,9 +57,9 @@ type BoothId struct {
 	value int
 }
 
-func NewBoothId(value int) (BoothId, *AppError) {
+func NewBoothId(value int) (BoothId, *common.AppError) {
 	if value < 0 {
-		return BoothId{}, NewAppError(ErrInvalid, "booth id must be non-negative")
+		return BoothId{}, common.NewAppError(common.ErrInvalid, "booth id must be non-negative")
 	}
 
 	return BoothId{value}, nil
@@ -76,7 +77,7 @@ type Booth struct {
 	location    BoothLocation
 }
 
-func NewBooth(id BoothId, eventNumber EventNumber, day int, location BoothLocation) (*Booth, *AppError) {
+func NewBooth(id BoothId, eventNumber EventNumber, day int, location BoothLocation) (*Booth, *common.AppError) {
 	return &Booth{
 		id:          id,
 		eventNumber: eventNumber,
@@ -103,6 +104,6 @@ func (booth *Booth) GetLocation() BoothLocation {
 
 // BoothRepository
 type BoothRepository interface {
-	Create(booth *Booth) (*Booth, *AppError)
-	FindAll() ([]*Booth, *AppError)
+	Create(booth *Booth) (*Booth, *common.AppError)
+	FindAll() ([]*Booth, *common.AppError)
 }

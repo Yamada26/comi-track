@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"comi-track/internal/common"
 	"comi-track/internal/domain"
 	"comi-track/internal/usecase"
 	"comi-track/pkg/logger"
@@ -64,7 +65,7 @@ func (ah *ArticleHandler) GetArticleById(ctx *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		logger.Logger.Warn("Handler: invalid article ID", "id", idStr, "error", err)
-		ctx.Error(domain.NewAppError(domain.ErrInvalid, "invalid article ID"))
+		ctx.Error(common.NewAppError(common.ErrInvalid, "invalid article ID"))
 		return
 	}
 

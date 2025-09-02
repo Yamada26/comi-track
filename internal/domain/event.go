@@ -1,12 +1,14 @@
 package domain
 
+import "comi-track/internal/common"
+
 type EventNumber struct {
 	value int
 }
 
 func NewEventNumber(value int) (EventNumber, error) {
 	if value <= 0 {
-		return EventNumber{}, NewAppError(ErrInvalid, "event number must be positive")
+		return EventNumber{}, common.NewAppError(common.ErrInvalid, "event number must be positive")
 	}
 
 	return EventNumber{value}, nil

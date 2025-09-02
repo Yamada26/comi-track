@@ -1,6 +1,7 @@
 package sqlite
 
 import (
+	"comi-track/internal/common"
 	"comi-track/internal/domain"
 	"comi-track/pkg/logger"
 
@@ -41,7 +42,7 @@ func (ar *ArticleRepository) Create(article *domain.Article) (*domain.Article, e
 
 		if err := tx.Create(&model).Error; err != nil {
 			logger.Logger.Error("Repository: failed to insert article", "error", err)
-			return domain.NewAppError(domain.ErrInternal, "failed to create article")
+			return common.NewAppError(common.ErrInternal, "failed to create article")
 		}
 
 		logger.Logger.Info("Repository: article inserted successfully", "id", model.ID)
@@ -68,7 +69,7 @@ func (ar *ArticleRepository) FindById(id int) (*domain.Article, error) {
 	var model ArticleModel
 	if err := ar.db.First(&model, id).Error; err != nil {
 		logger.Logger.Error("Repository: failed to fetch article", "id", id, "error", err)
-		return nil, domain.NewAppError(domain.ErrNotFound, "article not found")
+		return nil, common.NewAppError(common.ErrNotFound, "article not found")
 	}
 
 	logger.Logger.Info("Repository: article fetched successfully", "id", model.ID)
